@@ -1,0 +1,3 @@
+rootProject.name = 'ReactNativeFlixster'
+
+include ':app'
