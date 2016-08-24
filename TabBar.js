@@ -68,11 +68,11 @@ Bar.propTypes = {
 function Scene({ currentTab }) {
   return (
     <View style={styles.scene}>
-      {currentTab === 'color' &&
-        <NavApp />
-      }
-      {currentTab === 'movies' &&
+      {currentTab === 'Now Playing' &&
         <MoviesView />
+      }
+      {currentTab === 'Top Rated' &&
+        <NavApp />
       }
     </View>
   );
@@ -92,8 +92,8 @@ class TabBar extends React.Component {
       <View style={styles.container}>
         <Bar
           tabs={[
-            { name: 'color', onPress: () => this.setState({ currentTab: 'color' }) },
-            { name: 'movies', onPress: () => this.setState({ currentTab: 'movies' }) },
+            { name: 'Now Playing', onPress: () => this.setState({ currentTab: 'Now Playing' }) },
+            { name: 'Top Rated', onPress: () => this.setState({ currentTab: 'Top Rated' }) },
           ]}
           currentTab={currentTab}
         />
