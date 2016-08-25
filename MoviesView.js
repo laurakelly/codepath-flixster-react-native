@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { ListView, Text } from 'react-native';
+import { ListView, ActivityIndicator } from 'react-native';
 import MovieCellView from './MovieCellView';
 import { fetchMoviesMock } from './api';
 
@@ -41,7 +41,13 @@ class MoviesView extends React.Component {
     const { onPressMovie } = this.props;
 
     if (loading) {
-      return <Text style={{ marginTop: 20 }}>Loading...</Text>;
+      return (
+        <ActivityIndicator
+          animating
+          size={'large'}
+          style={{ flex: 1 }}
+        />
+      );
     }
 
     return (
