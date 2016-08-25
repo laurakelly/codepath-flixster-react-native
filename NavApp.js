@@ -57,7 +57,6 @@ class NavApp extends React.Component {
   }
 
   renderScene(route, navigator) {
-    console.log("renderscene")
     this.navBackAndroid = navigator;
     return (
       <TouchableOpacity

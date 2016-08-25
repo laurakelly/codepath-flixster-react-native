@@ -5,7 +5,7 @@ const URL_PREFIX = 'https://api.themoviedb.org/3/movie';
 const NOW_PLAYING_URL = `${URL_PREFIX}/now_playing?api_key=${API_KEY}`;
 const isError = false;
 
-function fetchMoviesMock() {
+export function fetchMoviesMock() {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       if (isError) {

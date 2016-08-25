@@ -86,6 +86,10 @@ class TabBar extends React.Component {
     this.state = { currentTab: 'color' };
   }
 
+  onClickMovie() {
+    this.setState({ currentTab: 'movieDetail' });
+  }
+
   render() {
     const { currentTab } = this.state;
     return (

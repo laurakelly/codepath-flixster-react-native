@@ -1,7 +1,8 @@
 import React from 'react';
 import { ListView, Text } from 'react-native';
 import MovieCellView from './MovieCellView';
-import { fetchMovies } from './api';
+import { fetchMoviesMock } from './api';
+import DetailMovieView from './DetailMovieView';
 
 class MoviesView extends React.Component {
   constructor(props) {
@@ -13,31 +14,49 @@ class MoviesView extends React.Component {
     this.state = {
       dataSource: ds,
       loading: true,
+      isDetailView: false,
+      selectedMovie: null,
     };
+
+    this.onPressMovie = this.onPressMovie.bind(this);
   }
 
   componentDidMount() {
-    fetchMovies()
+    fetchMoviesMock()
     .then(movies => {
       this.setState({
         dataSource: this.state.dataSource.cloneWithRows(movies),
         loading: false,
       });
     })
-    .catch(error => {
-      console.log(error.msg);
+    .catch(() => {
       this.setState({ loading: false });
     });
   }
 
+  onPressMovie(movie) {
+    this.setState({
+      isDetailView: true,
+      selectedMovie: movie,
+    });
+  }
+
   render() {
-    if (this.state.loading) {
+    const { loading, isDetailView, selectedMovie } = this.state;
+
+    if (loading) {
       return <Text style={{ marginTop: 20 }}>Loading...</Text>;
     }
+
+    if (isDetailView && selectedMovie) {
+      console.log('rendering detail');
+      return <DetailMovieView movie={selectedMovie} />;
+    }
+
     return (
       <ListView
         dataSource={this.state.dataSource}
-        renderRow={movie => <MovieCellView movie={movie} />}
+        renderRow={(movie) => <MovieCellView movie={movie} onPress={this.onPressMovie} />}
         style={{ marginTop: 20 }}
       />
     );

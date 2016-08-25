@@ -4,17 +4,19 @@ import {
   Text,
   StyleSheet,
   Image,
+  TouchableOpacity,
 } from 'react-native';
+import { POSTER_PLACEHOLDER } from './imageConstants';
+import { getPosterURI } from './imageUtils';
 
 const propTypes = {
   movie: PropTypes.shape({
     title: PropTypes.string.isRequired,
     overview: PropTypes.string.isRequired,
+    poster_path: PropTypes.string,
   }).isRequired,
+  onPress: PropTypes.func.isRequired,
 };
-
-const IMAGE_URI_PREFIX = 'https://image.tmdb.org/t/p/original';
-const getPosterURI = path => `${IMAGE_URI_PREFIX}/${path}`;
 
 const styles = StyleSheet.create({
   textContainer: {
@@ -36,44 +38,50 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: 'bold',
-  }
+  },
 });
 
 class MovieCellView extends React.Component {
   render() {
+    const { movie, onPress } = this.props;
     const {
       title,
       overview,
       poster_path: posterPath,
-    } = this.props.movie;
+    } = movie;
 
-    return(
-      <View style={styles.rowContainer}>
-        <Image
-          resizeMode="contain"
-          style={styles.image}
-          source={{ uri: getPosterURI(posterPath) }}
-        />
-        <View
-          style={styles.textContainer}
-        >
-          <Text
-            style={[styles.text, styles.title]}
-            numberOfLines={1}
+    const imagePath = posterPath ? posterPath : POSTER_PLACEHOLDER;
+
+    return (
+      <TouchableOpacity onPress={() => onPress(movie)}>
+        <View style={styles.rowContainer}>
+          <Image
+            resizeMode="contain"
+            style={styles.image}
+            source={{ uri: getPosterURI(imagePath) }}
+          />
+          <View
+            style={styles.textContainer}
           >
-            {title}
-          </Text>
-          <Text
-            style={styles.text}
-            numberOfLines={3}
-          >
-            {overview}
-          </Text>
+            <Text
+              style={[styles.text, styles.title]}
+              numberOfLines={1}
+            >
+              {title}
+            </Text>
+            <Text
+              style={styles.text}
+              numberOfLines={3}
+            >
+              {overview}
+            </Text>
+          </View>
         </View>
-      </View>
-    )
+      </TouchableOpacity>
+    );
   }
 }
 
 MovieCellView.propTypes = propTypes;
+
 export default MovieCellView;
