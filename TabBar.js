@@ -83,7 +83,7 @@ Scene.propTypes = { currentTab: PropTypes.string.isRequired };
 class TabBar extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { currentTab: 'color' };
+    this.state = { currentTab: 'Now Playing' };
   }
 
   onClickMovie() {
