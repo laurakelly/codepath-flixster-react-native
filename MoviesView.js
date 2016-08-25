@@ -1,21 +1,11 @@
 import React, { PropTypes } from 'react';
 import { ListView, ActivityIndicator } from 'react-native';
 import MovieCellView from './MovieCellView';
-import { fetchMoviesMock } from './api';
 
 const propTypes = {
   onPressMovie: PropTypes.func.isRequired,
-  filterTopRated: PropTypes.bool,
+  fetchFunction: PropTypes.func.isRequired,
 };
-
-const defaultProps = {
-  filterTopRated: false,
-};
-
-function processMovies(shouldFilter, movies) {
-  if (shouldFilter) return movies.filter((movie) => movie.vote_average > 5);
-  return movies;
-}
 
 class MoviesView extends React.Component {
   constructor(props) {
@@ -33,9 +23,8 @@ class MoviesView extends React.Component {
   }
 
   componentDidMount() {
-    const { filterTopRated } = this.props;
-    fetchMoviesMock()
-    .then(movies => processMovies(filterTopRated, movies))
+    const { fetchFunction } = this.props;
+    fetchFunction()
     .then(movies => {
       this.setState({
         dataSource: this.state.dataSource.cloneWithRows(movies),
@@ -46,7 +35,6 @@ class MoviesView extends React.Component {
       this.setState({ loading: false });
     });
   }
-
 
   render() {
     const { loading } = this.state;
@@ -73,5 +61,4 @@ class MoviesView extends React.Component {
 }
 
 MoviesView.propTypes = propTypes;
-MoviesView.defaultProps = defaultProps;
 export default MoviesView;

@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import MoviesView from './MoviesView';
 import DetailMovieView from './DetailMovieView';
+import { fetchNowPlaying } from './api';
 
 const routes = [
   { component: 'List', id: 0 },
@@ -49,7 +50,12 @@ class NowPlayingView extends React.Component {
     const { selectedMovie } = this.state;
     switch (route.component) {
         case 'List':
-          return <MoviesView onPressMovie={this.onPressMovie} />
+          return (
+            <MoviesView
+              onPressMovie={this.onPressMovie}
+              fetchFunction={fetchNowPlaying}
+            />
+          );
           break;
         case 'Detail':
           return <DetailMovieView movie={selectedMovie}/>

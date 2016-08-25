@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import MoviesView from './MoviesView';
 import DetailMovieView from './DetailMovieView';
+import { fetchTopRated } from './api';
 
 const routes = [
   { component: 'List', id: 0 },
@@ -49,7 +50,12 @@ class TopRatedView extends React.Component {
     const { selectedMovie } = this.state;
     switch (route.component) {
         case 'List':
-          return <MoviesView onPressMovie={this.onPressMovie} filterTopRated />
+          return (
+            <MoviesView
+              onPressMovie={this.onPressMovie}
+              fetchFunction={fetchTopRated}
+            />
+          );
           break;
         case 'Detail':
           return <DetailMovieView movie={selectedMovie}/>
