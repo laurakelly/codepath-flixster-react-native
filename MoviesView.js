@@ -5,7 +5,19 @@ import { fetchMoviesMock } from './api';
 
 const propTypes = {
   onPressMovie: PropTypes.func.isRequired,
+  filterTopRated: PropTypes.bool,
 };
+
+const defaultProps = {
+  filterTopRated: false,
+};
+
+function processMovies(shouldFilter, movies) {
+  console.log("filter: ", shouldFilter);
+  console.log(movies.filter((movie) => movie.vote_average > 5));
+  if (shouldFilter) return movies.filter((movie) => movie.vote_average > 5);
+  return movies;
+}
 
 class MoviesView extends React.Component {
   constructor(props) {
@@ -23,7 +35,9 @@ class MoviesView extends React.Component {
   }
 
   componentDidMount() {
+    const { filterTopRated } = this.props;
     fetchMoviesMock()
+    .then(movies => processMovies(filterTopRated, movies))
     .then(movies => {
       this.setState({
         dataSource: this.state.dataSource.cloneWithRows(movies),
@@ -61,4 +75,5 @@ class MoviesView extends React.Component {
 }
 
 MoviesView.propTypes = propTypes;
+MoviesView.defaultProps = defaultProps;
 export default MoviesView;

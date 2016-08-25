@@ -5,7 +5,7 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
-import NavApp from './NavApp';
+import TopRatedView from './TopRatedView';
 import NowPlayingView from './NowPlayingView';
 
 const styles = StyleSheet.create({
@@ -72,7 +72,7 @@ function Scene({ currentTab }) {
         <NowPlayingView />
       }
       {currentTab === 'Top Rated' &&
-        <NavApp />
+        <TopRatedView />
       }
     </View>
   );

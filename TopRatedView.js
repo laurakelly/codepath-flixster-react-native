@@ -14,7 +14,7 @@ const routes = [
   { component: 'Detail', id: 1 },
 ];
 
-class NowPlayingView extends React.Component {
+class TopRatedView extends React.Component {
   constructor(props) {
     super(props);
 
@@ -49,7 +49,7 @@ class NowPlayingView extends React.Component {
     const { selectedMovie } = this.state;
     switch (route.component) {
         case 'List':
-          return <MoviesView onPressMovie={this.onPressMovie} />
+          return <MoviesView onPressMovie={this.onPressMovie} filterTopRated />
           break;
         case 'Detail':
           return <DetailMovieView movie={selectedMovie}/>
@@ -81,4 +81,4 @@ class NowPlayingView extends React.Component {
   }
 }
 
-export default NowPlayingView;
+export default TopRatedView;
