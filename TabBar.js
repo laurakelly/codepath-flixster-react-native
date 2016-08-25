@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import NavApp from './NavApp';
-import MoviesView from './MoviesView';
+import NowPlayingView from './NowPlayingView';
 
 const styles = StyleSheet.create({
   container: {
@@ -69,7 +69,7 @@ function Scene({ currentTab }) {
   return (
     <View style={styles.scene}>
       {currentTab === 'Now Playing' &&
-        <MoviesView />
+        <NowPlayingView />
       }
       {currentTab === 'Top Rated' &&
         <NavApp />
@@ -84,10 +84,6 @@ class TabBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = { currentTab: 'Now Playing' };
-  }
-
-  onClickMovie() {
-    this.setState({ currentTab: 'movieDetail' });
   }
 
   render() {

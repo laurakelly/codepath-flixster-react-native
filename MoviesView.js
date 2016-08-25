@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { ListView, Text } from 'react-native';
 import MovieCellView from './MovieCellView';
 import { fetchMoviesMock } from './api';
-import DetailMovieView from './DetailMovieView';
+
+const propTypes = {
+  onPressMovie: PropTypes.func.isRequired,
+};
 
 class MoviesView extends React.Component {
   constructor(props) {
@@ -17,8 +20,6 @@ class MoviesView extends React.Component {
       isDetailView: false,
       selectedMovie: null,
     };
-
-    this.onPressMovie = this.onPressMovie.bind(this);
   }
 
   componentDidMount() {
@@ -34,33 +35,24 @@ class MoviesView extends React.Component {
     });
   }
 
-  onPressMovie(movie) {
-    this.setState({
-      isDetailView: true,
-      selectedMovie: movie,
-    });
-  }
 
   render() {
-    const { loading, isDetailView, selectedMovie } = this.state;
+    const { loading } = this.state;
+    const { onPressMovie } = this.props;
 
     if (loading) {
       return <Text style={{ marginTop: 20 }}>Loading...</Text>;
     }
 
-    if (isDetailView && selectedMovie) {
-      console.log('rendering detail');
-      return <DetailMovieView movie={selectedMovie} />;
-    }
-
     return (
       <ListView
         dataSource={this.state.dataSource}
-        renderRow={(movie) => <MovieCellView movie={movie} onPress={this.onPressMovie} />}
+        renderRow={(movie) => <MovieCellView movie={movie} onPress={() => onPressMovie(movie)} />}
         style={{ marginTop: 20 }}
       />
     );
   }
 }
 
+MoviesView.propTypes = propTypes;
 export default MoviesView;
