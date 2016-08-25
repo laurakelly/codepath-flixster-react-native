@@ -13,8 +13,6 @@ const defaultProps = {
 };
 
 function processMovies(shouldFilter, movies) {
-  console.log("filter: ", shouldFilter);
-  console.log(movies.filter((movie) => movie.vote_average > 5));
   if (shouldFilter) return movies.filter((movie) => movie.vote_average > 5);
   return movies;
 }
