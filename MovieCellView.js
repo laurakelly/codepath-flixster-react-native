@@ -54,7 +54,9 @@ class MovieCellView extends React.Component {
 
     return (
       <TouchableOpacity onPress={() => onPress(movie)}>
-        <View style={styles.rowContainer}>
+        <View
+          style={styles.rowContainer}
+        >
           <Image
             resizeMode="contain"
             style={styles.image}

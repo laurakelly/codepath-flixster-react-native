@@ -15,21 +15,26 @@ const propTypes = {
     backdrop_path: PropTypes.string,
     poster_path: PropTypes.string,
   }).isRequired,
+  layout: PropTypes.string,
 };
 
 const styles = StyleSheet.create({
   textContainer: {
     justifyContent: 'flex-start',
-    flex: 1,
   },
   image: {
     alignSelf: 'stretch',
+  },
+  portraitImage: {
     flex: 0.7,
   },
+  landscapeImage: {
+    flex: 0.8,
+  },
   container: {
-    flex: 1,
     flexDirection: 'column',
     padding: 10,
+    flex: 1,
   },
   text: {
     color: 'rgb(97, 97, 96)',
@@ -39,53 +44,84 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 5,
   },
+  portrait: {
+    flex: 1,
+  },
+  landscape: {
+    flex: 0.2,
+  },
 });
 
-function DetailMovieView({ movie }) {
-  const {
-    title,
-    overview,
-    backdrop_path: backdropPath,
-    poster_path: posterPath,
-  } = movie;
-
-  let imagePath;
-  if (backdropPath) {
-    imagePath = backdropPath;
-  } else if (posterPath) {
-    imagePath = posterPath;
-  } else {
-    imagePath = BACKDROP_PLACEHOLDER;
+class DetailMovieView extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { layout: 'portrait' };
+    this.onLayoutChange = this.onLayoutChange.bind(this);
   }
 
-  return (
-    <View style={styles.container}>
-      {backdropPath &&
-        <Image
-          resizeMode="contain"
-          style={styles.image}
-          source={{ uri: getPosterURI(imagePath) }}
-        />
-      }
+  onLayoutChange(e) {
+    const { width, height } = e.nativeEvent.layout;
+    if (width > height) {
+      this.setState({ layout: 'landscape' });
+    } else {
+      this.setState({ layout: 'portrait' });
+    }
+  }
 
+  render() {
+    const { movie } = this.props;
+    const { layout } = this.state;
+    const {
+      title,
+      overview,
+      backdrop_path: backdropPath,
+      poster_path: posterPath,
+    } = movie;
+
+    let imagePath;
+    if (backdropPath) {
+      imagePath = backdropPath;
+    } else if (posterPath) {
+      imagePath = posterPath;
+    } else {
+      imagePath = BACKDROP_PLACEHOLDER;
+    }
+
+    const imageLayout = () => layout === 'landscape' ? styles.landscapeImage : styles.portraitImage;
+    const layoutStyles = () => layout === 'landscape' ? styles.landscape : styles.portrait;
+
+    return (
       <View
-        style={styles.textContainer}
+        style={styles.container}
+        onLayout={this.onLayoutChange}
       >
-        <Text
-          style={[styles.text, styles.title]}
-          numberOfLines={1}
+        {backdropPath &&
+          <Image
+            resizeMode="contain"
+            style={[styles.image, imageLayout()]}
+            source={{ uri: getPosterURI(imagePath) }}
+          />
+        }
+
+        <View
+          style={[styles.textContainer, layoutStyles()]}
         >
-          {title}
-        </Text>
-        <Text
-          style={styles.text}
-          numberOfLines={3}
-        >
-          {overview}
-        </Text>
+          <Text
+            style={[styles.text, styles.title]}
+            numberOfLines={1}
+          >
+            {title}
+          </Text>
+          <Text
+            style={styles.text}
+            numberOfLines={3}
+          >
+            {overview}
+          </Text>
+        </View>
       </View>
-    </View>
-  );
+    );
+  }
 }
 
 DetailMovieView.propTypes = propTypes;
